@@ -3,6 +3,8 @@ const en = {
     logIn: "Log In",
     signUp: "Sign Up",
     logOut: "Log Out",
+    myProfile: "My Profile",
+    settings: "Settings",
     search: "Search",
     category: "Category",
     privacy: "Privacy",
@@ -17,10 +19,9 @@ const en = {
     th: "ไทย",
   },
   nav: {
-    findWork: "Find Work",
-    postJob: "Post a Job",
-    influencers: "Influencers",
-    about: "About",
+    application: "Application",
+    direct: "Direct",
+    submission: "Submission",
   },
   hero: {
     titleBefore: "Connect Brands with the",
@@ -98,7 +99,7 @@ const en = {
   auth: {
     footer: "© 2026 Solscale · {{privacy}} · {{terms}}",
     login: {
-      title: "Welcome back",
+      title: "Welcome",
       subtitle: "Sign in to your Solscale account",
       email: "Email address",
       password: "Password",

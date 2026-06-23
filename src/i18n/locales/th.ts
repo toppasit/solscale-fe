@@ -3,6 +3,8 @@ const th = {
     logIn: "เข้าสู่ระบบ",
     signUp: "สมัครสมาชิก",
     logOut: "ออกจากระบบ",
+    myProfile: "โปรไฟล์ของฉัน",
+    settings: "ตั้งค่า",
     search: "ค้นหา",
     category: "หมวดหมู่",
     privacy: "ความเป็นส่วนตัว",
@@ -17,10 +19,9 @@ const th = {
     th: "ไทย",
   },
   nav: {
-    findWork: "หางาน",
-    postJob: "ประกาศงาน",
-    influencers: "อินฟลูเอนเซอร์",
-    about: "เกี่ยวกับเรา",
+    application: "แอปพลิเคชัน",
+    direct: "ไดเร็กต์",
+    submission: "ซับมิชชัน",
   },
   hero: {
     titleBefore: "เชื่อมแบรนด์กับ",
@@ -98,7 +99,7 @@ const th = {
   auth: {
     footer: "© 2026 Solscale · {{privacy}} · {{terms}}",
     login: {
-      title: "ยินดีต้อนรับกลับ",
+      title: "ยินดีต้อนรับ",
       subtitle: "เข้าสู่ระบบบัญชี Solscale ของคุณ",
       email: "อีเมล",
       password: "รหัสผ่าน",

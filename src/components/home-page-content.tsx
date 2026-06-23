@@ -25,7 +25,6 @@ function PlatformBadge({ platform }: { platform: Platform }) {
     </span>
   );
 }
-
 function StarIcon() {
   return (
     <svg width="11" height="11" viewBox="0 0 11 11" fill="#F59E0B">
@@ -77,7 +76,7 @@ export default function HomePageContent() {
         <div className="absolute left-1/4 top-20 h-44 w-44 -rotate-12 border border-white/8" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
-          <h1 className="text-3xl font-black leading-[1.08] tracking-[-0.03em] sm:text-5xl md:text-6xl">
+          <h1 className="text-2xl font-medium leading-[1.08] tracking-[-0.03em] sm:text-4l md:text-4xl">
             {t("hero.titleBefore")}{" "}
             <span className="text-[#d7ff2f]">{t("hero.titleHighlight")}</span>
             <br className="hidden sm:block" />

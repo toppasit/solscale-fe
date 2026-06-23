@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/i18n/language-provider";
 import { useAuth } from "@/hooks/use-auth";
+import { getApplicationBadgeCount } from "@/lib/mock-applications";
+import { getSeenIds, SEEN_CHANGE_EVENT } from "@/lib/seen-applications";
 import LanguageSwitcher from "./language-switcher";
 
 function UserAvatar({ name }: { name: string }) {
@@ -22,8 +24,17 @@ export default function MainHeader() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [seenIds, setSeenIds] = useState<Set<string>>(new Set());
 
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Sync seenIds from localStorage and re-sync whenever an app is marked seen
+  useEffect(() => {
+    const sync = () => setSeenIds(getSeenIds());
+    sync();
+    window.addEventListener(SEEN_CHANGE_EVENT, sync);
+    return () => window.removeEventListener(SEEN_CHANGE_EVENT, sync);
+  }, []);
 
   // Close user dropdown when clicking outside
   useEffect(() => {
@@ -36,10 +47,12 @@ export default function MainHeader() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const applicationBadge = user ? getApplicationBadgeCount(user.id, user.role, seenIds) : 0;
+
   const navItems = [
-    { label: t("nav.application"), href: "#", badge: 3 },
-    { label: t("nav.direct"), href: "#", badge: 12 },
-    { label: t("nav.submission"), href: "#", badge: 5 },
+    { label: t("nav.application"), href: "/applications", badge: applicationBadge },
+    { label: t("nav.direct"), href: "#", badge: 0 },
+    { label: t("nav.submission"), href: "#", badge: 0 },
   ];
 
   function handleLogout() {

@@ -67,13 +67,16 @@ export default function HomePageContent() {
       <MainHeader />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#5e0029] pb-12 pt-12 text-white sm:pb-14 sm:pt-16">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_90%,rgba(37,94,54,0.7),transparent_45%),linear-gradient(120deg,#8c0034_0%,#5d0028_55%,#2a1020_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.4))]" />
-        <div className="absolute -left-16 top-8 h-56 w-56 rounded-full border border-white/10" />
-        <div className="absolute -right-16 top-12 h-56 w-56 rounded-full border border-white/10" />
-        <div className="absolute right-40 top-16 h-40 w-40 rotate-12 border border-white/8" />
-        <div className="absolute left-1/4 top-20 h-44 w-44 -rotate-12 border border-white/8" />
+      <section className="relative bg-[#5e0029] pb-12 pt-12 text-white sm:pb-14 sm:pt-16">
+        {/* Decorative layer – overflow-hidden scoped here so the dropdown isn't clipped */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_90%,rgba(37,94,54,0.7),transparent_45%),linear-gradient(120deg,#8c0034_0%,#5d0028_55%,#2a1020_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.4))]" />
+          <div className="absolute -left-16 top-8 h-56 w-56 rounded-full border border-white/10" />
+          <div className="absolute -right-16 top-12 h-56 w-56 rounded-full border border-white/10" />
+          <div className="absolute right-40 top-16 h-40 w-40 rotate-12 border border-white/8" />
+          <div className="absolute left-1/4 top-20 h-44 w-44 -rotate-12 border border-white/8" />
+        </div>
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
           <h1 className="text-2xl font-medium leading-[1.08] tracking-[-0.03em] sm:text-4l md:text-4xl">
@@ -83,60 +86,66 @@ export default function HomePageContent() {
             {" "}{t("hero.titleAfter")}
           </h1>
 
-          {/* Search bar */}
-          <div className="mx-auto mt-6 sm:mt-8 max-w-2xl rounded-2xl bg-white p-2 shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
-            <div className="flex h-11 items-center gap-2 px-3">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 text-[#9a003b]">
+          {/* Search bar with inline category picker */}
+          <div className="mx-auto mt-6 sm:mt-8 max-w-2xl">
+            <div className="flex items-center rounded-2xl bg-white p-2 shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="ml-1 shrink-0 text-[#9a003b]">
                 <circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.5" />
                 <path d="M10.5 10.5L13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
               <input
                 placeholder={t("hero.searchPlaceholder")}
                 aria-label={t("hero.searchAria")}
-                className="h-full flex-1 bg-transparent text-sm text-[#333] outline-none placeholder:text-[#aaa]"
+                className="mx-2 h-11 flex-1 bg-transparent text-sm text-[#333] outline-none placeholder:text-[#aaa]"
               />
-              <button className="h-9 rounded-xl bg-[#9d003b] px-4 sm:px-5 text-sm font-semibold text-white hover:bg-[#850030] transition-colors">
+
+              {/* Divider */}
+              <span className="h-6 w-px shrink-0 bg-[#e5e5e5]" />
+
+              {/* Category dropdown – inside the bar */}
+              <div ref={dropdownRef} className="relative shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setDropdownOpen((open) => !open)}
+                  className="flex h-9 items-center gap-1.5 rounded-xl px-3 text-sm font-medium text-[#555] transition-colors hover:bg-[#f5f5f5]"
+                >
+                  {t("common.category")}
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+
+                {dropdownOpen && (
+                  <div className="absolute right-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-xl border border-[#eee] bg-white py-1 shadow-lg">
+                    {availableCategories.length === 0 ? (
+                      <p className="px-4 py-3 text-[13px] text-[#888]">
+                        {t("hero.allCategoriesSelected")}
+                      </p>
+                    ) : (
+                      availableCategories.map((category) => (
+                        <button
+                          key={category}
+                          type="button"
+                          onClick={() => addCategory(category)}
+                          className="block w-full px-4 py-2.5 text-left text-[13px] text-[#333] hover:bg-[#fafafa]"
+                        >
+                          {categoryLabel(category)}
+                        </button>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Divider */}
+              <span className="mx-1 h-6 w-px shrink-0 bg-[#e5e5e5]" />
+
+              <button className="h-9 shrink-0 rounded-xl bg-[#9d003b] px-4 sm:px-5 text-sm font-semibold text-white transition-colors hover:bg-[#850030]">
                 {t("common.search")}
               </button>
             </div>
-          </div>
 
-          {/* Category filter */}
-          <div className="mx-auto mt-3 max-w-2xl text-left">
-            <div ref={dropdownRef} className="relative inline-block">
-              <button
-                type="button"
-                onClick={() => setDropdownOpen((open) => !open)}
-                className="flex h-10 items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 text-sm font-medium text-white backdrop-blur-sm hover:bg-white/15 transition-colors"
-              >
-                {t("common.category")}
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-
-              {dropdownOpen && (
-                <div className="absolute left-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-xl border border-[#eee] bg-white py-1 shadow-lg">
-                  {availableCategories.length === 0 ? (
-                    <p className="px-4 py-3 text-[13px] text-[#888]">
-                      {t("hero.allCategoriesSelected")}
-                    </p>
-                  ) : (
-                    availableCategories.map((category) => (
-                      <button
-                        key={category}
-                        type="button"
-                        onClick={() => addCategory(category)}
-                        className="block w-full px-4 py-2.5 text-left text-[13px] text-[#333] hover:bg-[#fafafa]"
-                      >
-                        {categoryLabel(category)}
-                      </button>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
-
+            {/* Selected category chips */}
             {selectedCategories.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-2">
                 {selectedCategories.map((category) => (
@@ -148,9 +157,7 @@ export default function HomePageContent() {
                     <button
                       type="button"
                       onClick={() => removeCategory(category)}
-                      aria-label={t("hero.removeCategory", {
-                        category: categoryLabel(category),
-                      })}
+                      aria-label={t("hero.removeCategory", { category: categoryLabel(category) })}
                       className="grid h-4 w-4 place-items-center rounded-full bg-white/20 text-[10px] hover:bg-white/30"
                     >
                       ×
